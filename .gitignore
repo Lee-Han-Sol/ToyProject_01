@@ -30,19 +30,13 @@ out/
 ############################
 # Logs
 ############################
-logs
+logs/
 *.log
 
 ############################
 # TypeScript
 ############################
 *.tsbuildinfo
-
-############################
-# Prisma
-############################
-prisma/dev.db
-prisma/dev.db-journal
 
 ############################
 # Docker
@@ -70,18 +64,15 @@ coverage/
 ############################
 tmp/
 temp/
-
-############################
-# Mac
-############################
 *.swp
 *.swo
 
-# 디폴트 무시된 파일
-/shelf/
-/.idea/workspace.xml
-# 에디터 기반 HTTP 클라이언트 요청
-/httpRequests/
-# Datasource local storage ignored files
-/dataSources/
-/dataSources.local.xml
+############################
+# JetBrains
+############################
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/shelf/
+httpRequests/
+dataSources/
+dataSources.local.xml
