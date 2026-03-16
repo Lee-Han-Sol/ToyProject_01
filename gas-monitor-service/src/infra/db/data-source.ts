@@ -1,5 +1,10 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
+import { Site } from "../../modules/site/site.entity";
+import { Sensor } from "../../modules/sensor/sensor.entity";
+import { GasReading } from "../../modules/gas-reading/gas-reading.entity";
+import { GasAlert } from "../../modules/gas-alert/gas-alert.entity";
+import { OutboxEvent } from "../../modules/outbox/outbox-event.entity";
 
 export const AppDataSource = new DataSource({
     type: "mysql",
@@ -10,5 +15,5 @@ export const AppDataSource = new DataSource({
     database: process.env.DB_NAME || "gas_monitor",
     synchronize: true,
     logging: true,
-    entities: ["src/**/*.entity.ts"],
+    entities: [Site, Sensor, GasReading, GasAlert, OutboxEvent],
 });
