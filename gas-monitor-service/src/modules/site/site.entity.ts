@@ -6,7 +6,7 @@ import {
     OneToMany,
 } from "typeorm";
 import { Sensor } from "../sensor/sensor.entity";
-
+//건설, 공사 단위 현장
 @Entity("sites")
 export class Site {
     @PrimaryGeneratedColumn()

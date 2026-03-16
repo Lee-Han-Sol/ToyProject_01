@@ -4,7 +4,7 @@ import {
     Column,
     CreateDateColumn,
 } from "typeorm";
-
+//측정결과 보낸 로그류
 @Entity("outbox_events")
 export class OutboxEvent {
     @PrimaryGeneratedColumn("uuid")

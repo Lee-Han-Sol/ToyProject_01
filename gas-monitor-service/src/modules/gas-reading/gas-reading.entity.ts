@@ -9,7 +9,7 @@ import {
 } from "typeorm";
 import { Sensor } from "../sensor/sensor.entity";
 import { GasAlert } from "../gas-alert/gas-alert.entity";
-
+//센서가 실측한 데이터
 @Entity("gas_readings")
 export class GasReading {
     @PrimaryGeneratedColumn()
