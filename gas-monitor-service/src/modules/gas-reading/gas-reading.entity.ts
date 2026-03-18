@@ -9,12 +9,14 @@ import {
 } from "typeorm";
 import { Sensor } from "../sensor/sensor.entity";
 import { GasAlert } from "../gas-alert/gas-alert.entity";
-//센서가 실측한 데이터
+
+// 센서가 수집한 가스 측정 원본 데이터
 @Entity("gas_readings")
 export class GasReading {
     @PrimaryGeneratedColumn()
     id: number;
 
+    // 논리 FK
     @Column()
     sensorId: number;
 
@@ -30,7 +32,10 @@ export class GasReading {
     @CreateDateColumn()
     createdAt: Date;
 
-    @ManyToOne(() => Sensor, (sensor) => sensor.readings, { onDelete: "CASCADE" })
+    // relation은 유지, 물리 FK 제약은 생성하지 않음
+    @ManyToOne(() => Sensor, (sensor) => sensor.readings, {
+        createForeignKeyConstraints: false,
+    })
     @JoinColumn({ name: "sensorId" })
     sensor: Sensor;
 

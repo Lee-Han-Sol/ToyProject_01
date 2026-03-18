@@ -4,7 +4,8 @@ import {
     Column,
     CreateDateColumn,
 } from "typeorm";
-//측정결과 보낸 로그류
+
+// 외부 메시지 발행 전 임시 저장용 Outbox
 @Entity("outbox_events")
 export class OutboxEvent {
     @PrimaryGeneratedColumn("uuid")
@@ -16,6 +17,7 @@ export class OutboxEvent {
     @Column({ length: 100 })
     aggregateType: string;
 
+    // 특정 도메인 객체 id를 문자열로 저장
     @Column({ length: 100 })
     aggregateId: string;
 
@@ -23,7 +25,7 @@ export class OutboxEvent {
     payload: Record<string, any>;
 
     @Column({ length: 20, default: "PENDING" })
-    status: string; // PENDING / PUBLISHED / FAILED
+    status: string;
 
     @CreateDateColumn()
     createdAt: Date;
