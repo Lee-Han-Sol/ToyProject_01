@@ -13,9 +13,14 @@ app.register(swagger, {
     openapi: {
         info: {
             title: "Gas Monitor API",
-            description: "건설 현장 가스 모니터링 API",
+            description: "건설 현장 가스 모니터링 API 문서",
             version: "1.0.0",
         },
+        tags: [
+            { name: "Site", description: "현장 관리 API" },
+            { name: "Sensor", description: "센서 관리 API" },
+            { name: "GasReading", description: "가스 측정값 API" },
+        ],
     },
 });
 
