@@ -8,20 +8,24 @@ import {
 } from "typeorm";
 import { Sensor } from "../sensor/sensor.entity";
 import { GasReading } from "../gas-reading/gas-reading.entity";
-//측정 이상치 감지 결과
+
+// 위험도 판정 결과
 @Entity("gas_alerts")
 export class GasAlert {
     @PrimaryGeneratedColumn()
     id: number;
 
+    // 논리 FK
     @Column()
     sensorId: number;
 
+    // 논리 FK
     @Column()
     readingId: number;
 
+    // WARNING / DANGER
     @Column({ length: 20 })
-    level: string; // NORMAL / WARNING / DANGER
+    level: string;
 
     @Column({ length: 255 })
     reason: string;
@@ -29,12 +33,15 @@ export class GasAlert {
     @CreateDateColumn()
     createdAt: Date;
 
-    @ManyToOne(() => Sensor, (sensor) => sensor.alerts, { onDelete: "CASCADE" })
+    // relation은 유지, 물리 FK 제약은 생성하지 않음
+    @ManyToOne(() => Sensor, (sensor) => sensor.alerts, {
+        createForeignKeyConstraints: false,
+    })
     @JoinColumn({ name: "sensorId" })
     sensor: Sensor;
 
     @ManyToOne(() => GasReading, (reading) => reading.alerts, {
-        onDelete: "CASCADE",
+        createForeignKeyConstraints: false,
     })
     @JoinColumn({ name: "readingId" })
     reading: GasReading;

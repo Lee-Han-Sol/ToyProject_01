@@ -16,6 +16,7 @@ export class Sensor {
     @PrimaryGeneratedColumn()
     id: number;
 
+    // 논리 FK (핵심)
     @Column()
     siteId: number;
 
@@ -31,7 +32,10 @@ export class Sensor {
     @CreateDateColumn()
     createdAt: Date;
 
-    @ManyToOne(() => Site, (site) => site.sensors, { onDelete: "CASCADE" })
+    // relation은 유지하되 FK 제약 제거
+    @ManyToOne(() => Site, (site) => site.sensors, {
+        createForeignKeyConstraints: false,
+    })
     @JoinColumn({ name: "siteId" })
     site: Site;
 
