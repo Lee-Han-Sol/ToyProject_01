@@ -1,34 +1,16 @@
 import { FastifyInstance } from "fastify";
-import { GasReadingService } from "./gas-reading.service";
+import { GasReadingController } from "./gas-reading.controller";
 
-const gasReadingService = new GasReadingService();
+// GasReading 라우트 정의
+export async function gasReadingRoutes(fastify: FastifyInstance) {
+    // 컨트롤러 생성
+    const controller = new GasReadingController();
 
-// GasReading 관련 HTTP 라우트 등록
-export async function gasReadingRoutes(app: FastifyInstance) {
-    // 센서 측정값 수집 API
-    app.post("/sensors/:sensorId/readings", async (request, reply) => {
-        const params = request.params as { sensorId: string };
+    // 가스 데이터 생성
+    // POST /sensors/:sensorId/readings
+    fastify.post("/", controller.createReading.bind(controller));
 
-        const body = request.body as {
-            gasType: string;
-            value: number;
-            unit: string;
-        };
-
-        // 필수값 검증
-        if (!body.gasType || body.value === undefined || !body.unit) {
-            return reply.status(400).send({
-                message: "gasType, value and unit are required",
-            });
-        }
-
-        const reading = await gasReadingService.createReading({
-            sensorId: Number(params.sensorId),
-            gasType: body.gasType,
-            value: body.value,
-            unit: body.unit,
-        });
-
-        return reply.status(201).send(reading);
-    });
+    // 가스 데이터 조회
+    // GET /sensors/:sensorId/readings
+    fastify.get("/", controller.getReadings.bind(controller));
 }

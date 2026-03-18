@@ -15,9 +15,22 @@ app.get("/health", async () => {
     };
 });
 
-// 모듈별 라우트 등록
-app.register(siteRoutes);
-app.register(sensorRoutes);
-app.register(gasReadingRoutes);
+  // 도메인별 라우트 등록
+  // prefix를 통해 URL 구조를 계층적으로 구성
+
+// Site
+app.register(siteRoutes, {
+    prefix: "/sites",
+});
+
+// Sensor (Site 하위 리소스)
+app.register(sensorRoutes, {
+    prefix: "/sites/:siteId/sensors",
+});
+
+// GasReading (Sensor 하위 리소스)
+app.register(gasReadingRoutes, {
+    prefix: "/sensors/:sensorId/readings",
+});
 
 export default app;

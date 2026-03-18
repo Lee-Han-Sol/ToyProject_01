@@ -1,27 +1,16 @@
 import { FastifyInstance } from "fastify";
-import { SiteService } from "./site.service";
+import { SiteController } from "./site.controller";
 
-const siteService = new SiteService();
+// Site 라우트 정의
+export async function siteRoutes(fastify: FastifyInstance) {
+    // 컨트롤러 인스턴스 생성
+    const controller = new SiteController();
 
-// Site 관련 HTTP 라우트 등록
-export async function siteRoutes(app: FastifyInstance) {
-    // 현장 생성 API
-    app.post("/sites", async (request, reply) => {
-        const body = request.body as {
-            name: string;
-            location: string;
-        };
+    // 현장 생성
+    // POST /sites
+    fastify.post("/", controller.createSite.bind(controller));
 
-        // 필수값 검증
-        if (!body.name || !body.location) {
-            return reply.status(400).send({
-                message: "name and location are required",
-            });
-        }
-
-        const site = await siteService.createSite(body);
-
-        // 생성 성공
-        return reply.status(201).send(site);
-    });
+    // 현장 목록 조회
+    // GET /sites
+    fastify.get("/", controller.getSites.bind(controller));
 }
