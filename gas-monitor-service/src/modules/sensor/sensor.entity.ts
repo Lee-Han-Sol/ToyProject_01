@@ -10,7 +10,7 @@ import {
 import { Site } from "../site/site.entity";
 import { GasReading } from "../gas-reading/gas-reading.entity";
 import { GasAlert } from "../gas-alert/gas-alert.entity";
-
+//현장에 설치된 가스 센서
 @Entity("sensors")
 export class Sensor {
     @PrimaryGeneratedColumn()
