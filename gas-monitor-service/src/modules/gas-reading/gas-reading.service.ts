@@ -23,4 +23,40 @@ export class GasReadingService {
 
         return await this.gasReadingRepository.save(reading);
     }
+
+    // 센서 측정값 조회
+    // GET /sensors/:sensorId/readings
+    async getReadings(
+        sensorId: number,
+        query?: { page?: number; limit?: number }
+    ) {
+        // 기본값 설정
+        const page = query?.page ?? 1;
+        const limit = query?.limit ?? 10;
+
+        // skip 계산
+        const skip = (page - 1) * limit;
+
+        // 조회
+        const [data, total] = await this.gasReadingRepository.findAndCount({
+            where: {
+                sensorId,
+            },
+            order: {
+                createdAt: "DESC",
+            },
+            skip,
+            take: limit,
+        });
+
+        return {
+            data,
+            meta: {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
+            },
+        };
+    }
 }
