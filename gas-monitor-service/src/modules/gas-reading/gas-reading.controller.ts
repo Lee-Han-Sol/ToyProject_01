@@ -1,45 +1,35 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { GasReadingService } from "./gas-reading.service";
+import { CreateGasReadingRequestDto } from "./dto/create-gas-reading.request.dto";
+import { GetGasReadingsQueryDto } from "./dto/get-gas-readings.query.dto";
 
 // 가스 측정 데이터 관련 Controller
 export class GasReadingController {
-    // 서비스 인스턴스
     private gasReadingService = new GasReadingService();
 
     // 가스 측정값 생성 API
     async createReading(
         request: FastifyRequest<{
             Params: {
-                sensorId: string; // 센서 ID (URL param)
+                sensorId: string;
             };
-            Body: {
-                gasType: string; // 가스 종류 (CH4, H2 등)
-                value: number; // 측정값
-                unit: string; // 단위 (ppm 등)
-            };
+            Body: CreateGasReadingRequestDto;
         }>,
         reply: FastifyReply
     ) {
         try {
-            // URL 파라미터 추출
             const { sensorId } = request.params;
+            const dto = request.body;
 
-            // Body 데이터 추출
-            const data = request.body;
+            const result = await this.gasReadingService.createReading(
+                Number(sensorId),
+                dto
+            );
 
-            // 서비스 호출 (가스 데이터 저장)
-            const result = await this.gasReadingService.createReading({
-                sensorId: Number(sensorId),
-                ...data,
-            });
-
-            // 성공 응답 반환
             return reply.code(201).send(result);
         } catch (error: any) {
-            // 에러 로그 출력
             request.log.error(error);
 
-            // 에러 응답 반환
             return reply.code(400).send({
                 message: error.message || "GasReading 생성 실패",
             });
@@ -49,7 +39,9 @@ export class GasReadingController {
     // 센서별 가스 데이터 조회 API
     async getReadings(
         request: FastifyRequest<{
-            Params: { sensorId: string };
+            Params: {
+                sensorId: string;
+            };
             Querystring: {
                 page?: string;
                 limit?: string;
@@ -60,17 +52,14 @@ export class GasReadingController {
         try {
             const { sensorId } = request.params;
 
-            const page = request.query.page
-                ? Number(request.query.page)
-                : undefined;
-
-            const limit = request.query.limit
-                ? Number(request.query.limit)
-                : undefined;
+            const query: GetGasReadingsQueryDto = {
+                page: request.query.page ? Number(request.query.page) : undefined,
+                limit: request.query.limit ? Number(request.query.limit) : undefined,
+            };
 
             const result = await this.gasReadingService.getReadings(
                 Number(sensorId),
-                { page, limit }
+                query
             );
 
             return reply.send(result);
