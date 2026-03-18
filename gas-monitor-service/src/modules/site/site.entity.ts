@@ -3,7 +3,7 @@ import {
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
-    OneToMany,
+    OneToMany, UpdateDateColumn, DeleteDateColumn,
 } from "typeorm";
 import { Sensor } from "../sensor/sensor.entity";
 //건설, 공사 현장 단위
@@ -22,6 +22,12 @@ export class Site {
 
     @CreateDateColumn()
     createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt!: Date;
+
+    @DeleteDateColumn({ nullable: true })
+    deletedAt!: Date | null;
 
     // relation은 조회 편의를 위해 유지
     @OneToMany(() => Sensor, (sensor) => sensor.site)

@@ -4,7 +4,7 @@ import {
     Column,
     CreateDateColumn,
     ManyToOne,
-    JoinColumn,
+    JoinColumn, UpdateDateColumn, DeleteDateColumn,
 } from "typeorm";
 import { Sensor } from "../sensor/sensor.entity";
 import { GasReading } from "../gas-reading/gas-reading.entity";
@@ -32,6 +32,12 @@ export class GasAlert {
 
     @CreateDateColumn()
     createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt!: Date;
+
+    @DeleteDateColumn({ nullable: true })
+    deletedAt!: Date | null;
 
     // relation은 유지, 물리 FK 제약은 생성하지 않음
     @ManyToOne(() => Sensor, (sensor) => sensor.alerts, {
