@@ -27,7 +27,7 @@ export class Sensor {
     type: string;
 
     @Column({ length: 100, nullable: true })
-    installLocation: string;
+    installLocation: string | null;
 
     @CreateDateColumn()
     createdAt: Date;
