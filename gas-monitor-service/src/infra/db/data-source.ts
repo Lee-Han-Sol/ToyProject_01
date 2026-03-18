@@ -13,7 +13,8 @@ export const AppDataSource = new DataSource({
     username: process.env.DB_USER || "root",
     password: process.env.DB_PASSWORD || "root",
     database: process.env.DB_NAME || "gas_monitor",
-    synchronize: true,
+    synchronize: true, // 개발단계에서 변경사항이 많으므로 설정
     logging: true,
     entities: [Site, Sensor, GasReading, GasAlert, OutboxEvent],
+    // migrations: ["src/migrations/*.ts"], // 마이그레이션 사용시
 });
