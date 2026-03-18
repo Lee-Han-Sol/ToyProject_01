@@ -26,8 +26,12 @@ export class Sensor {
     @Column({ length: 50 })
     type: string;
 
-    @Column({ length: 100, nullable: true })
-    installLocation: string | null;
+    @Column({
+        type: "varchar",   // 명시적으로 지정
+        length: 100,
+        nullable: true,
+    })
+    installLocation: string;
 
     @CreateDateColumn()
     createdAt: Date;
