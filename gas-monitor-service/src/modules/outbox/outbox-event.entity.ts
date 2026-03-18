@@ -24,7 +24,7 @@ export class OutboxEvent {
     @Column("json")
     payload: Record<string, any>;
 
-    @Column({ length: 20, default: "PENDING" })
+    @Column({ length: 20, default: "PENDING" }) //PENDING, PUBLISHED, FAILED
     status: string;
 
     @CreateDateColumn()
