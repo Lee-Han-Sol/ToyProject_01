@@ -76,3 +76,6 @@ temp/
 httpRequests/
 dataSources/
 dataSources.local.xml
+
+# Lambda index.mjs
+Lambda.md
