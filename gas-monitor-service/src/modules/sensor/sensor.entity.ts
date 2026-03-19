@@ -24,7 +24,10 @@ export class Sensor {
     name: string;
 
     @Column({ length: 50 })
-    type: string;
+    serial: string;
+
+    @Column({ length: 50 })
+    model: string;
 
     @Column({
         type: "varchar",   // 명시적으로 지정

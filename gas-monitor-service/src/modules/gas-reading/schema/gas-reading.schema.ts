@@ -3,7 +3,7 @@
 export const createGasReadingSwaggerSchema = {
     tags: ["GasReading"],
     summary: "가스 측정값 저장",
-    description: "특정 센서의 가스 측정값을 저장합니다.",
+    description: "특정 센서의 가스 측정값을 저장하고, 기준 초과 시 경보와 이벤트를 생성합니다.",
     params: {
         type: "object",
         required: ["sensorId"],
