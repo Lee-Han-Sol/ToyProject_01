@@ -1,5 +1,6 @@
 import { AppDataSource } from "../db/data-source";
 import { OutboxEvent } from "../../modules/outbox/outbox-event.entity";
+import {publishToSNS} from "../sns/sns.publisher";
 
 // Outbox 이벤트를 외부로 발행하는 Publisher
 export class OutboxPublisher {
@@ -66,6 +67,13 @@ export class OutboxPublisher {
         console.log("payload:", JSON.stringify(event.payload, null, 2));
         console.log("==================");
 
-        // 나중에 여기서 SNS/SQS로 보냄
+        // SNS/SQS로 보냄
+        await publishToSNS({
+            eventType: event.eventType,
+            aggregateType: event.aggregateType,
+            aggregateId: event.aggregateId,
+            payload: event.payload,
+            occurredAt: event.createdAt,
+        });
     }
 }
