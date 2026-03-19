@@ -2,7 +2,7 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
-    CreateDateColumn,
+    CreateDateColumn, Index,
 } from "typeorm";
 
 // 외부 메시지 발행 전 임시 저장용 Outbox
@@ -25,6 +25,7 @@ export class OutboxEvent {
     payload: Record<string, any>;
 
     @Column({ length: 20, default: "PENDING" }) //PENDING, PUBLISHED, FAILED
+    @Index()
     status: string;
 
     @CreateDateColumn()
