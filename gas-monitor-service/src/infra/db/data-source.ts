@@ -1,10 +1,10 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { Site } from "../../src/modules/site/site.entity";
-import { Sensor } from "../../src/modules/sensor/sensor.entity";
-import { GasReading } from "../../src/modules/gas-reading/gas-reading.entity";
-import { GasAlert } from "../../src/modules/gas-alert/gas-alert.entity";
-import { OutboxEvent } from "../../src/modules/outbox/outbox-event.entity";
+import { Site } from "../../modules/site/site.entity";
+import { Sensor } from "../../modules/sensor/sensor.entity";
+import { GasReading } from "../../modules/gas-reading/gas-reading.entity";
+import { GasAlert } from "../../modules/gas-alert/gas-alert.entity";
+import { OutboxEvent } from "../../modules/outbox/outbox-event.entity";
 
 export const AppDataSource = new DataSource({
     type: "mysql",

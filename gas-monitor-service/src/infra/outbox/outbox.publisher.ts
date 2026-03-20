@@ -1,5 +1,5 @@
 import { AppDataSource } from "../db/data-source";
-import { OutboxEvent } from "../../src/modules/outbox/outbox-event.entity";
+import { OutboxEvent } from "../../modules/outbox/outbox-event.entity";
 import {publishToSNS} from "../sns/sns.publisher";
 
 // Outbox 이벤트를 외부로 발행하는 Publisher
