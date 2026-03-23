@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    "strict": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+
+    "types": ["node"],
+
+    "strictPropertyInitialization": false // TypeORM이 데이터베이스가 값을 생성해 주거나 DB에서 값을 읽어와서 객체에 주입해주기 때문에 우리가 직접 초기화할 필요가 없음
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
