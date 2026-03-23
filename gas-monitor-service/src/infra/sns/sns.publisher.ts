@@ -6,10 +6,11 @@ dotenv.config();
 // AWS SNS 클라이언트 생성
 const snsClient = new SNSClient({
     region: process.env.AWS_REGION,
-    credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
-    },
+    // 운영서버에선 필요없으니 주석처리
+    // credentials: {
+    //     accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
+    //     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
+    // },
 });
 
 // SNS로 메시지 발행
