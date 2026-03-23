@@ -28,7 +28,6 @@ export class SensorService {
             siteId,
             site,
             name: data.name,
-            type: data.type,
             installLocation: data.installLocation ?? null,
         });
 
@@ -43,7 +42,6 @@ export class SensorService {
             id: sensor.id,
             siteId: sensor.siteId,
             name: sensor.name,
-            type: sensor.type,
             installLocation: sensor.installLocation,
             createdAt: sensor.createdAt,
             updatedAt: sensor.updatedAt,
