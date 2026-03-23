@@ -1,17 +1,32 @@
 version: "3.8"
-
+#도커 mysql
 services:
   mysql:
     image: mysql:8.0
     container_name: gas-monitor-mysql
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: gas_monitor
     ports:
       - "3307:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
+#도커 어플리케이션
+  api:
+    build:
+      context: ./gas-monitor-service
+      dockerfile: Dockerfile
+    container_name: gas-monitor-api
+    depends_on:
+      - mysql
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./gas-monitor-service/.env
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+    restart: always
 
 volumes:
-  mysql_data:
+  mysql-data:
