@@ -53,7 +53,7 @@
 5. OutboxPublisher → SNS Publish
 6. SNS → Lambda Trigger → Slack Webhook 알림
 
-### 아키텍처 다이어그램 (자리)
+### 아키텍처 다이어그램
 ![img_1.png](img_1.png)
 ---
 
@@ -123,10 +123,12 @@ AWS_SNS_TOPIC_ARN=Terraform apply로 생성된 Topic ARN
 
 ### 3) 로컬 실행(선택)
 - 로컬에서 앱을 Node로 실행하려면:
-  [CODEBLOCK]
-- cd gas-monitor-service
-- npm install
-- npm run dev
+
+```
+cd gas-monitor-service
+npm install
+npm run dev
+```
 
 ### 4) Health Check
 ```
@@ -237,7 +239,7 @@ sudo systemctl status docker docker.socket --no-pager
 - 호스트 포트(3307)는 “외부/호스트에서 접속”할 때만 사용
 - `.env`의 키 이름(DB_USERNAME/DB_DATABASE 등)이 코드와 불일치하면 연결 실패
 
-[CODEBLOCK] `.env 권장 예시(운영)`
+`.env 권장 예시(운영)`
 - DB_HOST=mysql
 - DB_PORT=3306
 - DB_USERNAME=root
@@ -265,10 +267,12 @@ sudo systemctl status docker docker.socket --no-pager
 ---
 
 ## 스크린샷
-- Swagger 화면: docs/swagger.png
-- Slack 알림 예시: docs/slack.png
-- Terraform apply 결과: docs/terraform.png
-- GitHub Actions 성공 화면: docs/actions.png
-- EC2 docker ps 결과: docs/docker-ps.png
-
+### Slack 알림 봇 활성
+![img_2.png](img_2.png)
+### Swagger Open API
+![img_3.png](img_3.png)
+### GitHub Action
+![img_4.png](img_4.png)
+### Doker ps
+![img_5.png](img_5.png)
 ---
