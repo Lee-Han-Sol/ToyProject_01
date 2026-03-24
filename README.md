@@ -53,8 +53,8 @@
 5. OutboxPublisher → SNS Publish
 6. SNS → Lambda Trigger → Slack Webhook 알림
 
-### 아키텍처 다이어그램 (자리)
-![img_1.png](img_1.png)
+### 아키텍처 다이어그램
+![image1]()
 ---
 
 ## 주요 기능
@@ -123,10 +123,12 @@ AWS_SNS_TOPIC_ARN=Terraform apply로 생성된 Topic ARN
 
 ### 3) 로컬 실행(선택)
 - 로컬에서 앱을 Node로 실행하려면:
-  [CODEBLOCK]
-- cd gas-monitor-service
-- npm install
-- npm run dev
+
+```
+cd gas-monitor-service
+npm install
+npm run dev
+```
 
 ### 4) Health Check
 ```
@@ -222,7 +224,54 @@ sudo docker inspect gas-monitor-api --format 'StartedAt={{.State.StartedAt}}'
 
 ## Troubleshooting
 
-### 1) Docker 데몬 연결 실패
+### 1) NestJS 방식(DTO + Decorator 기반 Swagger 자동화)을 Fastify에 그대로 적용하려다 막힘
+
+- NestJS에서는 DTO에 decorator를 붙여 Swagger를 자동 생성하는 패턴(예: `@ApiProperty`)이 일반적
+- **Fastify + Node TS 환경에서는 NestJS 전용 decorator 기반 Swagger 자동화가 그대로 적용되지 않거나 비효율적**
+  - `@ApiProperty` 같은 접근은 Nest 생태계를 전제로 하며 Fastify에서는 동일하게 지원되지 않음
+
+정리
+  - **DTO는 유지** (요청/응답 구조를 코드 레벨에서 명확히 하기 위해)
+  - Swagger는 **Fastify Route Schema(JSON Schema)로 분리**하여 관리
+- (향후 개선) Validation + Schema 생성을 일관되게 하기 위해 **Zod / TypeBox 기반 리팩토링 예정**
+
+---
+
+### 2) TypeORM 컬럼 타입이 `Object`로 인식되어 MySQL에서 실패했던 문제
+
+증상: TypeORM 초기화 시 아래 오류
+  - `DataTypeNotSupportedError: Data type "Object" in "Sensor.installLocation" is not supported by "mysql"`
+
+조치: 
+- `tsconfig.json`에서 decorator metadata 활성화
+  ```
+  {
+    "compilerOptions": {
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true
+    }
+  }
+  ```
+- 문제 가능성이 있는 컬럼은 DB 타입을 명시적으로 지정하여 추론 의존도를 낮춤
+  ```
+  @Column({
+   type: "varchar",
+   length: 100,
+   nullable: true,
+  })
+  installLocation: string;
+  ```
+
+원인
+- TypeORM은 **TypeScript 타입 정보 + Reflect Metadata**를 기반으로 컬럼 타입을 추론
+- TypeScript의 decorator metadata 설정이 누락되거나 전달이 깨지면, 일부 필드가 의도와 다르게 `Object`로 해석될 수 있음
+- MySQL은 `Object` 타입을 지원하지 않으므로 런타임에서 실패
+
+정리
+- 자동 추론”에만 의존하면 환경 차이/설정 누락 시 타입 추론이 깨질 수 있습니다.
+- 운영 안정성을 위해 중요 컬럼은 DB 타입을 명시하고, decorator metadata 옵션을 켜서 안정화했습니다.
+
+### 3) Docker 데몬 연결 실패
 증상: Cannot connect to the Docker daemon  
 조치:
 ```
@@ -231,25 +280,25 @@ sudo systemctl start docker
 sudo systemctl status docker docker.socket --no-pager
 ```
 
-### 2) API ↔ MySQL 연결 실패
+### 4) API ↔ MySQL 연결 실패
 원인/해결 핵심:
 - 컨테이너 내부 통신은 `mysql:3306`
 - 호스트 포트(3307)는 “외부/호스트에서 접속”할 때만 사용
 - `.env`의 키 이름(DB_USERNAME/DB_DATABASE 등)이 코드와 불일치하면 연결 실패
 
-[CODEBLOCK] `.env 권장 예시(운영)`
+.env 권장 예시(운영)
 - DB_HOST=mysql
 - DB_PORT=3306
 - DB_USERNAME=root
 - DB_PASSWORD=root
 - DB_DATABASE=gas_monitor
 
-### 3) EC2 Role 사용 시 SNS publish 실패
+### 5) EC2 Role 사용 시 SNS publish 실패
 - 서버에 AWS 키를 넣으면 SDK가 환경변수를 우선 사용 → Role이 무시될 수 있음
 - 운영에서는 `credentials` 강제 주입 제거 + `.env`의 AWS_ACCESS_KEY/SECRET 제거 권장
 - IMDSv2 Required이면 토큰 방식으로 Role 부착 여부 확인
 
-### 4) Dockerfile 빌드 오류: no build stage
+### 6) Dockerfile 빌드 오류: no build stage
 - Dockerfile 첫 줄은 반드시 FROM으로 시작해야 함(LABEL이 위에 오면 실패)
 
 ---
@@ -265,10 +314,12 @@ sudo systemctl status docker docker.socket --no-pager
 ---
 
 ## 스크린샷
-- Swagger 화면: docs/swagger.png
-- Slack 알림 예시: docs/slack.png
-- Terraform apply 결과: docs/terraform.png
-- GitHub Actions 성공 화면: docs/actions.png
-- EC2 docker ps 결과: docs/docker-ps.png
-
+### Slack 알림 봇 활성
+![image2](https://github.com/user-attachments/assets/4e1678d6-ea77-44a5-8cc4-191f1b96efd2)
+### Swagger Open API
+![image3](https://github.com/user-attachments/assets/21d48dd0-3e7c-41d9-82f3-a07361ee9124)
+### GitHub Action
+![image4](https://github.com/user-attachments/assets/0c380b9a-f8d8-4539-8d02-990a3d732f1a)
+### Doker ps
+![image5](https://github.com/user-attachments/assets/ecfeff22-d2dc-447f-9cf2-e2e65964c803)
 ---
