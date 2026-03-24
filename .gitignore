@@ -92,3 +92,6 @@ infra/terraform/*.tfvars.json
 
 # plan output
 infra/terraform/*.tfplan
+
+# 개인문서
+README2.md
