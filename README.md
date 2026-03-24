@@ -21,8 +21,6 @@
 - [Troubleshooting](#troubleshooting)
 - [추가 고려사항](#추가-고려사항)
 - [스크린샷](#스크린샷)
-- [면접용 1페이지 요약](#면접용-1페이지-요약)
-
 ---
 
 ## 프로젝트 개요
@@ -54,7 +52,7 @@
 6. SNS → Lambda Trigger → Slack Webhook 알림
 
 ### 아키텍처 다이어그램
-![image1]()
+![image1](https://github.com/user-attachments/assets/49dc6f6a-e9bb-459c-849e-bb9044132db1)
 ---
 
 ## 주요 기능
@@ -315,11 +313,11 @@ sudo systemctl status docker docker.socket --no-pager
 
 ## 스크린샷
 ### Slack 알림 봇 활성
-![image2](https://github.com/user-attachments/assets/4e1678d6-ea77-44a5-8cc4-191f1b96efd2)
-### Swagger Open API
 ![image3](https://github.com/user-attachments/assets/21d48dd0-3e7c-41d9-82f3-a07361ee9124)
-### GitHub Action
+### Swagger Open API
 ![image4](https://github.com/user-attachments/assets/0c380b9a-f8d8-4539-8d02-990a3d732f1a)
-### Doker ps
+### GitHub Action
 ![image5](https://github.com/user-attachments/assets/ecfeff22-d2dc-447f-9cf2-e2e65964c803)
+### Doker ps
+![image2](https://github.com/user-attachments/assets/4e1678d6-ea77-44a5-8cc4-191f1b96efd2)
 ---
